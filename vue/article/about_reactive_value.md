@@ -40,19 +40,18 @@ console.log(reactive_object)
 
  参考 https://ja.vuejs.org/guide/essentials/reactivity-fundamentals.html#limitations-of-reactive
 
- ## 注意点 
- ### 変数を用いてリアクティブな状態を宣言した場合
- - ref の中で計算式を用いて初期化した場合、計算が行われるのは初回のみ
- - computed では計算に使用されている変数が変更される毎に計算が行われる
-
+ ## 算出プロパティ
+ ### 変数を用いてリアクティブな状態を宣言する場合
+ ref(), reactive() に変数を渡した場合、戻り値は元の変数のプロキシとなるため、元の変数の変更は検知されない <br>
+ 元の変数の変更を検知したい場合は算出プロパティを使用する
  - 以下の例では、ボタンを押す毎に x がインクリメントされるが、computed で定義した値だけが再計算される
 
 ```vue.js
 <script setup>
 import { ref, computed } from 'vue'
 const x = ref(1)
-const calculate_with_ref = ref(x.value + 1)
-const calculate_with_computed = computed(() => x.value + 1)
+const calculate_with_ref = ref(x.value)
+const calculate_with_computed = computed(() => x.value + 1) // 算出プロパティの定義
 </script>
 
 <template>
