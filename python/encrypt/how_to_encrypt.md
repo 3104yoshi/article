@@ -24,3 +24,19 @@ data = cipher.decrypt_and_verify(ciphertext, tag)
   - じゃあこの鍵はどこに保存すればよいのか？環境変数でよいのか？
  - pyca/cryptography
   - https://cryptography.io/en/latest/
+
+ - AES mode
+  - GCM 
+    - パフォーマンス、セキュリティなど様々な観点から優れているが、実装が複雑になる
+    - 他人が実装してくれるなら GCM は最高
+    - 特許なし
+  - OCB 
+    - パフォーマンス良い
+    - https://www.cs.ucdavis.edu/~rogaway/ocb/ が特許保持
+      - そのため、GPLライセンス (フリーライセンス) なら問題ないが、商用利用するなら課金の必要あり
+  - EAX
+    - デメリット : GCM, OCB と比較するとパフォーマンスに劣る
+    - メリット
+      - 特許なし
+      - 実装しやすい
+  - 参考 https://blog.cryptographyengineering.com/2012/05/19/how-to-choose-authenticated-encryption/
