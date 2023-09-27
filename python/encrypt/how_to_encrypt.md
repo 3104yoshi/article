@@ -11,17 +11,16 @@ from Crypto.Random import get_random_bytes
 # encrypt
 data = b'secret data'
 
+# 同じ key を使用しても cipher が異なる場合、元のデータがおなしでも暗号化後のデータは異なる
 key = get_random_bytes(16)
 cipher = AES.new(key, AES.MODE_EAX)
 ciphertext, tag = cipher.encrypt_and_digest(data)
 
-data = cipher.decrypt_and_verify(ciphertext, tag)
 # decrypt
+data = cipher.decrypt_and_verify(ciphertext, tag)
 
 ```
  
- - 疑問点
-  - じゃあこの鍵はどこに保存すればよいのか？環境変数でよいのか？
  - pyca/cryptography
   - https://cryptography.io/en/latest/
 
