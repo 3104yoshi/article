@@ -35,8 +35,8 @@
 
  - fixture や confest.py を使用すると、各テスト関数内で定義する必要がなくなる
 
-## テストの前処理を定義する方法
-### fixture を使用する方法
+## テストの前後処理を定義する方法
+### fixture を使用する
  - @pytest.fixture() を付与した関数内の処理を呼び出すことができる
  - 以下の例では、test_sample() に hoge() を渡すことで、test_sample() の前に hoge() が呼び出される。
 
@@ -66,9 +66,9 @@ hoge
 .
 ```
 
- 事前処理だけでなく、事後処理を定義することもできる
- また、戻り値を yield で返すことにより、各テスト関数の事後処理も記述できる  
- (request-context オブジェクトであれば 「addfinalizer に事後処理となるメソッドを渡す」という方法がより安全であるが、ここでは割愛する)  
+ 事前処理だけでなく、事後処理を定義することもできる  
+ その場合は、以下のように戻り値を yield で返せばよい  
+ (request-context オブジェクトであれば 「addfinalizer に事後処理となるメソッドを渡す」という方法がより安全であるそうだが、ここでは割愛する)  
 
 ```python
 import pytest
@@ -154,7 +154,7 @@ hoge
       └─ test_app2.py
 ```
 
- - その場合は confest.py に fixture を定義すると、scope が正しく機能する
+ - その場合は後述の confest.py に fixture を定義すると、scope が正しく機能する
 
 ```
   root
@@ -166,5 +166,92 @@ hoge
       └─ test_app2.py
 ```
 
-### confest.py を使用する方法
- - 
+### confest.py について
+ - fixture を conftest.py で定義することで、同じディレクトリにある複数のテストモジュールで fixture が使用できるようになる
+ - また、上位のディレクトリにある conftest 内で定義された fixture は使用できるが、下位のものは使用できない。
+
+ 以下の例であれば、test_app3.py からは tests/conftest.py を使用できる。  
+ 一方、test_app.py からは test_dir2/conftest.py は使用できない。
+
+ディレクトリ構成
+```
+ root
+  └─ tests
+      ├─ conftest.py
+      ├─ test_app.py
+      └─ test_dir2
+           ├─ conftest.py
+           └─ test_app2.py
+```
+サンプルコード
+```python:tests/conftest.py
+# tests/conftest.py
+import pytest
+
+@pytest.fixture(scope="function")
+def hoge():
+    print("start")
+    message = "ほげ"
+
+    yield message
+
+    print("done")
+```
+```python:tests/test_app.py
+# tests/conftest.py
+class TestApp:
+    def test_sample(self, hoge):
+        print(hoge)
+
+    def test_sample2(self, hoge):
+        print(hoge)
+
+class TestApp1_2:
+    def test_sample(self, hoge):
+        print(hoge)
+```
+```python:test_dir2/conftest.py
+import pytest
+
+@pytest.fixture(scope="function")
+def hoge2():
+    # setup
+    print("start2")
+    message = "ほげ2"
+
+    yield message
+
+    print("done2")
+```
+```python:test_dir2/test_app2.py
+class TestApp2:
+    # 上位ディレクトリの conftest.py に定義された fixture は使用可能
+    def test_sample(self, hoge):
+        print(hoge)
+
+    def test_sample2(self, hoge2):
+        print(hoge2)
+```
+以下の実行結果から、test_app2.py で上位にある fixture を呼び出せている
+``` shell
+# command in root/tests/
+pytest -s
+
+# 出力結果
+test_app.py start
+ほげ
+.done
+start
+ほげ
+.done
+start
+ほげ
+.done
+
+test_dir2\test_app2.py start
+ほげ
+.done
+start2
+ほげ2
+.done2
+```
