@@ -12,5 +12,9 @@ main メソッドを定義する
 
 #### @Component
 Spring Application の実行時に自動で読み込まれるクラス  
-@SpringBootApplication を付与したクラス、または @ComponentScan を付与したクラスによって読み込まれる  
+@SpringBootApplication を付与したクラス、または @ComponentScan で指定したクラスによって読み込まれる  
 前者ではサブディレクトリが読み込まれ、後者においては @ComponentScan(basePackages = "package name") で指定したパッケージに含まれる Component が読み込まれる  
+
+![Alt text](image.png)  
+DemoApplication クラスに @SpringBootApplication を付与し、かつ上記の構成を考える  
+この場合、デフォルトでは CommonProcess クラスのみ読み込まれ、@ComponentScan(basePackages = "com.example.external") とすると ExternalProcess のみ読み込まれる  
