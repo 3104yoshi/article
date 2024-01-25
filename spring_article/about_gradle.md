@@ -48,6 +48,10 @@ sourceSets {
 }
 ```
 
+### trouble shooting
+- build.gradle に依存関係を追加したが、External Library に必要なライブラリが追加されない
+    - .idea を削除し、File > Invalidate Caches を選択。起動後、build する。
+
 sourceSets の定義を省略した場合、以下のデフォルトの設定が適用される  
 main の source : 'src/main/java'
 main の resource : 'src/main/resources'
