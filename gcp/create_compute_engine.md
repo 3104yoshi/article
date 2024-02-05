@@ -1,0 +1,4 @@
+ - e2-micro : 無料枠
+ - terraform を用いて VMインスタンスの起動をコードで管理する
+   - https://dev.classmethod.jp/articles/google-cloud-advent-calendar-2021-18-terraform/
+   - https://registry.terraform.io/providers/hashicorp/google/latest/docs

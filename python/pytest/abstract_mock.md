@@ -24,7 +24,7 @@ mock を知らない人のために簡単に説明を。
     from unittest.mock import patch
     class TestApp:
         @patch('os.getcwd')
-        def test_with_mock_patch(self, mock_getcwd):
+        def test_patch(self, mock_getcwd):
             mock_getcwd.return_value = 'mocked'
             print(f"cwd={os.getcwd()}")
 
@@ -44,7 +44,7 @@ mock を知らない人のために簡単に説明を。
     from unittest.mock import patch
     class TestApp:
         @patch('os.getcwd', return_value = 'mocked')
-        def test_with_mock_patch(self, mock_getcwd):
+        def test_patch(self, mock_getcwd):
             print(f"cwd={os.getcwd()}")
 
         def test_with(self):

@@ -16,3 +16,7 @@ Dockerfile の命令に変更がある場合は、変更がある命令以降の
 従って、更新頻度の少ない命令を Dockerfile の上の方に書いておくと良い  
 
 なお、命令に変更はないが、キャッシュを使用したくない場合は --no-cache オプションを付与することでキャッシュが使用されなくなる
+
+### docker 上で実行している db について adminer から SQL コマンドで csv をエクスポートする
+以下のコマンドを実行すると、db を実行しているコンテナ内の tmp/ 下に csv が出力される
+copy public.sample to '/tmp/test.csv' csv header delimiter ',' force quote * null as '<null>'
