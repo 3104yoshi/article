@@ -4,6 +4,7 @@
 TARGET_DATE=$1
 
 # Use awk to filter the table and extract file names
+# It's unnecessary to set values with FS and OFS in BEGIN statement because they are default values. 
 awk -v target="$TARGET_DATE" '
 BEGIN { FS=" "; OFS="\n"; }
 {
