@@ -7,3 +7,7 @@
  - Jobs : shell script や action の集まり
  - Actions : スクリプトより複雑なことをしたいときに使用する？
  - runner : workflow を実行するサーバー (Github-hosted or Self-hosted)
+ - ※当然ではあるが、CI/CD において build のプロセスのために ビルドするための環境 (build host) を用意する必要がある。 aws codebuild なら ec2, ecr, lambda などを利用する。
+
+#### reference
+ - https://docs.github.com/en/actions/about-github-actions/understanding-github-actions
