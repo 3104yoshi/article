@@ -30,7 +30,58 @@
 
 - assertThrows (added in JUnit 4.13)
 
-#### mock functional interface
+#### verify functional interface created in method
+
+- To test SampleApplication#test
+  - to confirm that sampleFunctional#executeSampleFunction receives functional if expected.
+  - This functional IF doesn't have equals and hashcode method, and also isn't injected as argument.
+  - So, simply applying Mockito.when doesn't work.
+  - We can test it with thenAnswer(), which can fetch method's argument that is actually passed. 
+
+```java
+@Component
+public class SampleApplication {
+
+    private final SampleFunctionalIFExecutor sampleFunctionalIFExecutor;
+
+    public SampleApplicationRunner(SampleFunctionalIFExecutor sampleFunctionalIFExecutor) {
+        this.sampleFunctionalIFExecutor = sampleFunctionalIFExecutor;
+    }
+
+    public String test(String key) {
+        SampleFunctionalIF sampleFunctionalIF = () -> key;
+        return sampleFunctionalIFExecutor.executeSampleFunction(sampleFunctionalIF);
+    }
+}
+
+@FunctionalInterface
+@Component
+public interface SampleFunctionalIF {
+    String execute();
+}
+
+@Component
+public class SampleFunctionalIFExecutor {
+
+    public String executeSampleFunction(SampleFunctionalIF sampleFunctionalIF) {
+        return sampleFunctionalIF.execute();
+    }
+}
+```
+
+- test code
+
+```java
+    @Test
+    void testMethod() {
+        when(sampleFunctionalIfExecutor.executeSampleFunction(any(SampleFunctionalIF.class))).thenAnswer(invocation -> {
+            SampleFunctionalIF sampleFunctionalIF = invocation.getArgument(0);
+            assertEquals("Hello World", sampleFunctionalIF.execute());
+            return "Hello World";
+        });
+        runner.test("Hello World");
+    }
+```
 
 ### reference
 
