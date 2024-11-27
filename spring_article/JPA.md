@@ -28,3 +28,8 @@
 - very fast
 - default implementation in Spring Boot 
   - ref: https://docs.spring.io/spring-boot/reference/data/sql.html#data.sql.datasource.connection-pool
+
+## dependencies
+- how to specify the driver
+  - runtimeOnly 'org.postgresql:postgresql'
+  - reference : https://mvnrepository.com/artifact/org.postgresql/postgresql/42.6.0
