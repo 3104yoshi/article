@@ -36,3 +36,14 @@ if __name__ == '__main__':
 
 #### Cache-Control
 - this header can define various types of cache.
+- There is 'Cache-Control' in HTTP request (implementation sample is below).
+- If you access to root/image multiple times in an hour, you can get content without downloading image file again (status code is 304 ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/304).
+- you can check the status code and transfered file size (The size gets small by caching. If you disable cache, the size gets bigger)
+
+```python
+@app.route('/image')
+def serve_image():
+    response = make_response(send_file('../img/large_image.jpg'))
+    response.headers['Cache-Control'] = 'public, max-age=3600'
+    return response
+```
