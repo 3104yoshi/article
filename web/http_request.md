@@ -35,3 +35,4 @@ if __name__ == '__main__':
 ```
 
 #### Cache-Control
+- this header can define various types of cache.
