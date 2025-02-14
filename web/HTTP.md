@@ -51,3 +51,98 @@ def serve_image():
 #### cookie
 - ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
 - A cookie is a small piece of data server sends to user's web browser.
+- it's used for below purposes
+  - session management
+  - personalization
+  - tracking
+
+- you can set some value to cookie, and check it from Application tab in browser's developer tool.
+
+```python
+@app.route('/setcookie')
+def set_cookie():
+    response = make_response("Cookie is set")
+    response.set_cookie('username', 'user1')
+    return response
+```
+
+##### session management example in framework for authentification
+- you can take a look Flask-login framework as reference.
+1. The web server will creates cookie including session id specific to user when user access to the web site for the first time.
+2. User receive the cookie
+3. When user send the login information and it is authentificated by server, server regard the session id as authentificated one.
+4. User sent http request with cookie including authentificated session id, server can return contents limited to the authentificated user 
+
+```python
+from flask import Flask, redirect, url_for, request
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+
+app = Flask(__name__)
+app.secret_key = 'supersecretkey'
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+# Dummy user database
+users = {'user1': {'password': 'password123'}}
+
+
+class User(UserMixin):
+    def __init__(self, id):
+        self.id = id
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id in users:
+        return User(user_id)
+    return None
+
+
+@app.route('/')
+def home():
+    return '''
+        <h1>Hello, World!</h1>
+        <form action="/login" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username"><br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password"><br><br>
+            <input type="submit" value="Login">
+        </form>
+        <br>
+        <form action="/protected" method="get">
+            <input type="submit" value="Go to Protected Page">
+        </form>
+    '''
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form['username']
+    password = request.form['password']
+    if username in users and users[username]['password'] == password:
+        user = User(username)
+        login_user(user)
+        return redirect(url_for('protected'))
+    return "Invalid credentials", 401
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
+
+@app.route('/protected')
+@login_required
+def protected():
+    return f'Hello, {current_user.id}! This is a protected route.'
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8000)
+
+```
