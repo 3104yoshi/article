@@ -78,6 +78,9 @@ from flask import Flask, redirect, url_for, request
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 app = Flask(__name__)
+
+# you ought to generate secret key with below command, ref: https://flask.palletsprojects.com/en/latest/quickstart/#sessions
+# $ python -c 'import secrets; print(secrets.token_hex())'
 app.secret_key = 'supersecretkey'
 
 login_manager = LoginManager()
