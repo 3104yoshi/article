@@ -149,3 +149,8 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
 
 ```
+
+### Cross-Origin Resource Sharing (CORS)
+- same-origin policy
+  - a mechanism to restrict that contents or scripts loaded by one origin interact with another origin.
+  - for securing security (avoid loading potentially malicous contents).
