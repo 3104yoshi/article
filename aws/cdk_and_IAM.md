@@ -1,5 +1,11 @@
 ### permissions around CDK
 
+#### my issue
+- I added S3 bucket policy for limiting bucket policy to update itself. (adding role)
+- And then deploy it by aws cdk with the added role, but it failed.
+- This is why the role used for deployment by cdk is cdk execution role, which is created by cdk bootstrap.
+- So, I should have added permission for S3 bucket policy to cdk execution role.
+
 #### What permissions should we apply?
 ##### white list (allowing list)
 - anti pattern
@@ -19,3 +25,7 @@
 
 ###### my hypothesis
 - Basically, to avoid easy privilege excalation, the IAM roles to execute cloudformation (deploy) is created automatically?
+
+
+### reference
+https://github.com/aws/aws-cdk/wiki/Security-And-Safety-Dev-Guide
