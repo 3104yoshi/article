@@ -27,5 +27,9 @@
 - Basically, to avoid easy privilege excalation, the IAM roles to execute cloudformation (deploy) is created automatically?
 
 
+##### my summary
+・It's better to allow CDK to create role because it create roles with the least privileges.  
+・If your company won't allow to create such roles in order to prevent privilege escalation, you can use Permission Boundaries.
+
 ### reference
 https://github.com/aws/aws-cdk/wiki/Security-And-Safety-Dev-Guide
