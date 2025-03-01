@@ -1,0 +1,2 @@
+- we can download geological data from https://www.gsi.go.jp/gazochosa/gazochosa61002.html.
+- we can use QGIS as GIS tool.
