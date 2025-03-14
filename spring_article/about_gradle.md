@@ -21,6 +21,10 @@ Groovy or kotlin で書かれたスクリプトファイル
 #### dependencies
 - 読み込みたいパッケージをここに記述できる  
 
+### publishing
+- mavenPublishingToLocal
+  - $USER_HOME/.m2/repository にパブリッシュされ、他のプロジェクトからも参照できるようになる
+
 
 #### sourceSets
 sourceSets にソースディレクトリとリソースの位置が定義されている  
